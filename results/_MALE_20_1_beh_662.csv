@@ -1,0 +1,3 @@
+n,block_type,rt,acc,stimulus,answer,target
+0,training,,1,B,[],False
+1,training,,1,Y,[],False
