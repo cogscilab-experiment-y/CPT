@@ -2,10 +2,9 @@ import atexit
 import csv
 import random
 from os.path import join
-import pandas as pd
 from psychopy import visual, event, core
 
-from code.load_data import load_config, load_images, prepare_block_stimulus
+from code.load_data import load_config
 from code.screen_misc import get_screen_res
 from code.show_info import part_info, show_info
 from code.check_exit import check_exit
@@ -47,7 +46,6 @@ def block(config, stimulus_list, block_type, win, fixation, clock, screen_res, f
     for trial in stimulus_list:
         key = None
         reaction_time = None
-        acc = -1
         n += 1
         stimulus = visual.TextStim(win, color=config["stimulus_color"], text=trial["stimulus"],
                                    height=config["stimulus_size"], pos=config["stimulus_pos"])
@@ -74,11 +72,6 @@ def block(config, stimulus_list, block_type, win, fixation, clock, screen_res, f
         win.callOnFlip(event.clearEvents)
         win.flip()
 
-        print(key)
-        print(trial["target"])
-        print(key and trial["target"])
-        print(not key and not trial["target"])
-        print((key and trial["target"]) or (not key and not trial["target"]))
         acc = 1 if (key and trial["target"]) or (not key and not trial["target"]) else 0
 
         trial_results = {"n": n, "block_type": block_type,
@@ -98,7 +91,7 @@ def block(config, stimulus_list, block_type, win, fixation, clock, screen_res, f
 def main():
     global PART_ID
     config = load_config()
-    info, PART_ID = part_info(test=True)
+    info, PART_ID = part_info(test=False)
 
     screen_res = dict(get_screen_res())
     win = visual.Window(list(screen_res.values()), fullscr=True, units='pix', screen=0, color=config["screen_color"])
